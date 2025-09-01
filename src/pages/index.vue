@@ -1,38 +1,65 @@
 <template>
-  <div class="h-[90vh] bg-base-100 text-base-content flex flex-col overflow-hidden">
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-800">
     <!-- 主要内容区域 -->
-    <div class="flex-1 flex flex-col justify-center items-center px-4">
+    <div class="container mx-auto px-4 py-16">
       <!-- 标题区域 -->
-      <div class="text-center space-y-6 mb-8">
+      <div class="text-center space-y-8 mb-16">
         <RevealMotion :delay="0">
-          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
-            赫兹系统
+          <h1
+            class="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            智能二手车价格预测系统
           </h1>
         </RevealMotion>
 
         <RevealMotion :delay="0.1">
-          <p class="text-lg md:text-xl opacity-70">
-            项目介绍
+          <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+            基于AI机器学习技术，为您提供精准的二手车价格评估与市场趋势分析
           </p>
         </RevealMotion>
 
         <RevealMotion :delay="0.2">
-          <div class="flex items-center justify-center gap-3 pt-2">
-            <a class="btn btn-primary rounded-full px-6">立即使用</a>
-            <a class="btn btn-outline rounded-full px-6">了解更多</a>
+          <div class="flex items-center justify-center gap-4 pt-4">
+            <router-link to="/user/prediction"
+              class="btn btn-primary btn-lg rounded-full px-8 shadow-lg hover:shadow-xl transition-all">
+              开始预测
+            </router-link>
+            <router-link to="/user/trends"
+              class="btn btn-outline btn-lg rounded-full px-8 hover:bg-blue-50 transition-all">
+              查看趋势
+            </router-link>
           </div>
         </RevealMotion>
       </div>
 
-      <!-- 功能亮点：紧凑布局 -->
-      <div class="max-w-4xl w-full">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <RevealMotion v-for="(f, i) in features" :key="i" :delay="i * 0.08">
-            <div class="card bg-base-200 shadow-sm hover:shadow-md transition rounded-xl">
-              <div class="card-body p-4">
-                <h3 class="card-title text-sm">{{ f.title }}</h3>
-                <p class="opacity-70 text-xs">{{ f.desc }}</p>
+      <!-- 核心功能展示 -->
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <RevealMotion v-for="(feature, i) in features" :key="i" :delay="i * 0.1">
+            <div class="card bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-0">
+              <div class="card-body p-6 text-center">
+                <div class="text-4xl mb-4">{{ feature.icon }}</div>
+                <h3 class="card-title text-lg font-semibold text-gray-800 justify-center">{{ feature.title }}</h3>
+                <p class="text-gray-600 text-sm mt-2">{{ feature.desc }}</p>
               </div>
+            </div>
+          </RevealMotion>
+        </div>
+      </div>
+
+      <!-- 数据统计 -->
+      <div class="mt-20">
+        <RevealMotion :delay="0.4">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">平台数据概览</h2>
+            <p class="text-gray-600">实时更新的市场数据，助您做出明智决策</p>
+          </div>
+        </RevealMotion>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <RevealMotion v-for="(stat, i) in stats" :key="i" :delay="0.5 + i * 0.1">
+            <div class="text-center p-6 bg-white rounded-xl shadow-md">
+              <div class="text-3xl font-bold text-blue-600 mb-2">{{ stat.value }}</div>
+              <div class="text-gray-600 text-sm">{{ stat.label }}</div>
             </div>
           </RevealMotion>
         </div>
@@ -40,8 +67,10 @@
     </div>
 
     <!-- 页脚 -->
-    <footer class="border-t border-base-200 py-4 text-center text-sm opacity-70">
-      {{ footerText }}
+    <footer class="bg-gray-800 text-white py-8 mt-20">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-gray-300">{{ footerText }}</p>
+      </div>
     </footer>
   </div>
 </template>
@@ -113,14 +142,20 @@ const RevealMotion = defineComponent<RevealProps>({
   },
 });
 
-// 文案内容：保持中性，便于替换
+// 二手车价格预测系统核心功能
 const features = [
-  { title: "极简设计", desc: "去除干扰，聚焦信息与层次。" },
-  { title: "响应布局", desc: "桌面/移动端一致的体验。" },
-  { title: "即插即用", desc: "替换文字与链接即可上线。" },
-  { title: "轻量动画", desc: "只在需要处出现的动效。" },
-  { title: "DaisyUI 组件", desc: "开箱即用的优雅样式。" },
-  { title: "Tailwind 原子化", desc: "一致、可维护的样式体系。" },
+  { title: "智能预测", desc: "AI算法精准评估车辆价值", icon: "🤖" },
+  { title: "趋势分析", desc: "实时掌握市场价格动态", icon: "📈" },
+  { title: "模型训练", desc: "自定义训练预测模型", icon: "🧠" },
+  { title: "社区交流", desc: "与专家用户互动分享", icon: "💬" },
+];
+
+// 平台数据统计
+const stats = [
+  { value: "50万+", label: "车辆数据" },
+  { value: "95%", label: "预测准确率" },
+  { value: "10万+", label: "用户信赖" },
+  { value: "24/7", label: "实时服务" },
 ];
 </script>
 
@@ -130,5 +165,4 @@ html,
 body {
   overflow: hidden;
 }
-
 </style>

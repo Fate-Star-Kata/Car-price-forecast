@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区交流 - 二手车价格预测系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">🚗 二手车价格预测</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="prediction.html">价格预测</a></li>
+                    <li><a href="trends.html">价格趋势</a></li>
+                    <li><a href="training.html">模型训练</a></li>
+                    <li><a href="community.html" style="background-color: rgba(255,255,255,0.2);">社区交流</a></li>
+                    <li><a href="admin.html">管理后台</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main style="padding: 2rem 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <div class="grid grid-3">
+                <!-- 左侧：分类导航 -->
+                <div>
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="card-header">
+                            <h2 class="card-title">讨论分类</h2>
+                        </div>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="#" onclick="filterPosts('all')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">🏠 全部讨论</a></li>
+                            <li><a href="#" onclick="filterPosts('buying')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">🛒 购车咨询</a></li>
+                            <li><a href="#" onclick="filterPosts('selling')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">💰 卖车经验</a></li>
+                            <li><a href="#" onclick="filterPosts('maintenance')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">🔧 保养维修</a></li>
+                            <li><a href="#" onclick="filterPosts('market')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">📈 市场分析</a></li>
+                            <li><a href="#" onclick="filterPosts('qa')" style="display: block; padding: 10px; border-bottom: 1px solid #eee; text-decoration: none; color: #333;">❓ 问答求助</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">社区统计</h2>
+                        </div>
+                        <div class="stat-card" style="margin-bottom: 1rem;">
+                            <div class="stat-number">2,456</div>
+                            <div class="stat-label">总帖子数</div>
+                        </div>
+                        <div class="stat-card" style="margin-bottom: 1rem;">
+                            <div class="stat-number">8,923</div>
+                            <div class="stat-label">总回复数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">1,234</div>
+                            <div class="stat-label">活跃用户</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 中间：帖子列表 -->
+                <div style="grid-column: span 2;">
+                    <!-- 发帖区域 -->
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="card-header">
+                            <h2 class="card-title">发表新帖</h2>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">帖子标题</label>
+                            <input type="text" class="form-control" id="postTitle" placeholder="请输入帖子标题...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">选择分类</label>
+                            <select class="form-control form-select" id="postCategory">
+                                <option value="buying">购车咨询</option>
+                                <option value="selling">卖车经验</option>
+                                <option value="maintenance">保养维修</option>
+                                <option value="market">市场分析</option>
+                                <option value="qa">问答求助</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">帖子内容</label>
+                            <textarea class="form-control" id="postContent" rows="4" placeholder="请输入帖子内容..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="publishPost()">发布帖子</button>
+                    </div>
+                    
+                    <!-- 帖子列表 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">最新讨论</h2>
+                            <select class="form-control form-select" style="width: auto;" onchange="sortPosts(this.value)">
+                                <option value="latest">最新发布</option>
+                                <option value="hot">最热讨论</option>
+                                <option value="replies">回复最多</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 帖子项 -->
+                        <div class="post-item" style="padding: 1rem; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">
+                                        <a href="#" onclick="viewPost('post1')" style="text-decoration: none; color: #333;">2024年二手车市场趋势分析，哪些车型最保值？</a>
+                                    </h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.9rem;">最近想买一辆二手车，看了很多资料，发现不同品牌的保值率差异很大。想听听大家的经验，哪些车型比较保值...</p>
+                                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #999;">
+                                        <span>👤 车友小王</span>
+                                        <span>📅 2024-01-20 14:30</span>
+                                        <span style="background-color: #e3f2fd; color: #1976d2; padding: 2px 6px; border-radius: 3px;">市场分析</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-left: 1rem;">
+                                    <div style="font-weight: bold; color: #007bff;">23</div>
+                                    <div style="font-size: 0.8rem; color: #666;">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-item" style="padding: 1rem; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">
+                                        <a href="#" onclick="viewPost('post2')" style="text-decoration: none; color: #333;">刚买的二手凯美瑞，分享一下验车经验</a>
+                                    </h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.9rem;">上周刚提了一辆2019年的凯美瑞，从看车到成交花了两周时间，踩了不少坑，也学到了很多验车技巧...</p>
+                                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #999;">
+                                        <span>👤 老司机李哥</span>
+                                        <span>📅 2024-01-20 11:15</span>
+                                        <span style="background-color: #e8f5e8; color: #2e7d32; padding: 2px 6px; border-radius: 3px;">购车咨询</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-left: 1rem;">
+                                    <div style="font-weight: bold; color: #007bff;">45</div>
+                                    <div style="font-size: 0.8rem; color: #666;">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-item" style="padding: 1rem; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">
+                                        <a href="#" onclick="viewPost('post3')" style="text-decoration: none; color: #333;">求助：宝马3系变速箱异响，大概需要多少维修费？</a>
+                                    </h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.9rem;">我的2017年宝马3系最近变速箱有异响，4S店说可能需要大修，报价3万多，想问问大家有没有遇到过类似问题...</p>
+                                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #999;">
+                                        <span>👤 焦虑的车主</span>
+                                        <span>📅 2024-01-20 09:45</span>
+                                        <span style="background-color: #fff3e0; color: #f57c00; padding: 2px 6px; border-radius: 3px;">保养维修</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-left: 1rem;">
+                                    <div style="font-weight: bold; color: #007bff;">12</div>
+                                    <div style="font-size: 0.8rem; color: #666;">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-item" style="padding: 1rem; border-bottom: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">
+                                        <a href="#" onclick="viewPost('post4')" style="text-decoration: none; color: #333;">卖车攻略：如何让你的二手车卖个好价钱</a>
+                                    </h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.9rem;">最近成功卖掉了开了5年的雅阁，价格比预期高了1万多，总结了一些卖车的经验和技巧，希望对大家有帮助...</p>
+                                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #999;">
+                                        <span>👤 卖车达人</span>
+                                        <span>📅 2024-01-19 16:20</span>
+                                        <span style="background-color: #f3e5f5; color: #7b1fa2; padding: 2px 6px; border-radius: 3px;">卖车经验</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-left: 1rem;">
+                                    <div style="font-weight: bold; color: #007bff;">67</div>
+                                    <div style="font-size: 0.8rem; color: #666;">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-item" style="padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">
+                                        <a href="#" onclick="viewPost('post5')" style="text-decoration: none; color: #333;">新手求教：第一次买二手车需要注意什么？</a>
+                                    </h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.9rem;">刚拿到驾照，想买人生第一辆车，预算10万左右，完全不懂二手车市场，求各位老司机指点迷津...</p>
+                                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #999;">
+                                        <span>👤 新手小白</span>
+                                        <span>📅 2024-01-19 14:10</span>
+                                        <span style="background-color: #ffebee; color: #c62828; padding: 2px 6px; border-radius: 3px;">问答求助</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-left: 1rem;">
+                                    <div style="font-weight: bold; color: #007bff;">89</div>
+                                    <div style="font-size: 0.8rem; color: #666;">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 分页 -->
+                        <div style="display: flex; justify-content: center; margin-top: 2rem; padding: 1rem;">
+                            <button class="btn btn-secondary" style="margin: 0 5px;">上一页</button>
+                            <button class="btn btn-primary" style="margin: 0 5px;">1</button>
+                            <button class="btn btn-secondary" style="margin: 0 5px;">2</button>
+                            <button class="btn btn-secondary" style="margin: 0 5px;">3</button>
+                            <button class="btn btn-secondary" style="margin: 0 5px;">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer style="background-color: #333; color: white; text-align: center; padding: 2rem 0;">
+        <div class="container">
+            <p>&copy; 2024 二手车价格预测系统. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * 发布新帖子
+         */
+        function publishPost() {
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            
+            if (!title.trim()) {
+                alert('请输入帖子标题');
+                return;
+            }
+            
+            if (!content.trim()) {
+                alert('请输入帖子内容');
+                return;
+            }
+            
+            // 模拟发布帖子
+            console.log('发布帖子:', { title, category, content });
+            
+            // 清空表单
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            
+            alert('帖子发布成功！实际项目中这里会连接后端API保存帖子数据。');
+        }
+
+        /**
+         * 查看帖子详情
+         */
+        function viewPost(postId) {
+            console.log('查看帖子:', postId);
+            alert('查看帖子详情功能，实际项目中这里会跳转到帖子详情页面');
+        }
+
+        /**
+         * 筛选帖子
+         */
+        function filterPosts(category) {
+            console.log('筛选帖子分类:', category);
+            
+            // 移除所有分类的激活状态
+            const categoryLinks = document.querySelectorAll('ul li a');
+            categoryLinks.forEach(link => {
+                link.style.backgroundColor = 'transparent';
+                link.style.color = '#333';
+            });
+            
+            // 激活当前分类
+            event.target.style.backgroundColor = '#007bff';
+            event.target.style.color = 'white';
+            
+            alert(`筛选 ${category} 分类的帖子，实际项目中这里会重新加载对应分类的帖子列表`);
+        }
+
+        /**
+         * 排序帖子
+         */
+        function sortPosts(sortType) {
+            console.log('排序方式:', sortType);
+            alert(`按 ${sortType} 排序帖子，实际项目中这里会重新排序帖子列表`);
+        }
+
+        /**
+         * 页面初始化
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加帖子项悬停效果
+            const postItems = document.querySelectorAll('.post-item');
+            postItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+            });
+            
+            // 默认激活"全部讨论"分类
+            const allCategoryLink = document.querySelector('ul li:first-child a');
+            if (allCategoryLink) {
+                allCategoryLink.style.backgroundColor = '#007bff';
+                allCategoryLink.style.color = 'white';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -38,9 +38,27 @@ export const defaultMenuItems: MenuItem[] = [
     hide: false,
   },
   {
-    id: 'knowledge',
-    label: '知识库',
-    href: '/user/knowledge',
+    id: 'prediction',
+    label: '价格预测',
+    href: '/user/prediction',
+    icon: null,
+  },
+  {
+    id: 'trends',
+    label: '价格趋势',
+    href: '/user/trends',
+    icon: null,
+  },
+  {
+    id: 'training',
+    label: '模型训练',
+    href: '/user/training',
+    icon: null,
+  },
+  {
+    id: 'community',
+    label: '社区交流',
+    href: '/user/community',
     icon: null,
   },
   {

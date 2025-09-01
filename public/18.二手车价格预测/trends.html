@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>价格趋势 - 二手车价格预测系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">🚗 二手车价格预测</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="prediction.html">价格预测</a></li>
+                    <li><a href="trends.html" style="background-color: rgba(255,255,255,0.2);">价格趋势</a></li>
+                    <li><a href="training.html">模型训练</a></li>
+                    <li><a href="community.html">社区交流</a></li>
+                    <li><a href="admin.html">管理后台</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main style="padding: 2rem 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; color: #333;">二手车价格趋势分析</h1>
+            
+            <!-- 筛选条件 -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">筛选条件</h2>
+                </div>
+                <div class="grid grid-4">
+                    <div class="form-group">
+                        <label class="form-label">品牌</label>
+                        <select class="form-control form-select" id="brandSelect">
+                            <option value="">全部品牌</option>
+                            <option value="toyota">丰田</option>
+                            <option value="honda">本田</option>
+                            <option value="volkswagen">大众</option>
+                            <option value="bmw">宝马</option>
+                            <option value="mercedes">奔驰</option>
+                            <option value="audi">奥迪</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">车型</label>
+                        <select class="form-control form-select" id="modelSelect">
+                            <option value="">全部车型</option>
+                            <option value="sedan">轿车</option>
+                            <option value="suv">SUV</option>
+                            <option value="hatchback">两厢车</option>
+                            <option value="mpv">MPV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">年份范围</label>
+                        <select class="form-control form-select" id="yearSelect">
+                            <option value="">全部年份</option>
+                            <option value="2020-2024">2020-2024</option>
+                            <option value="2015-2019">2015-2019</option>
+                            <option value="2010-2014">2010-2014</option>
+                            <option value="2005-2009">2005-2009</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="visibility: hidden;">操作</label>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="updateTrends()">更新趋势</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 价格趋势图表 -->
+            <div class="grid grid-2" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">价格趋势图</h2>
+                    </div>
+                    <canvas id="priceChart" width="400" height="200"></canvas>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">品牌价格对比</h2>
+                    </div>
+                    <canvas id="brandChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            
+            <!-- 市场分析 -->
+            <div class="grid grid-3" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <div class="stat-number">¥12.5万</div>
+                    <div class="stat-label">平均价格</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">+5.2%</div>
+                    <div class="stat-label">月度涨幅</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8,456</div>
+                    <div class="stat-label">交易量</div>
+                </div>
+            </div>
+            
+            <!-- 热门车型排行 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">热门车型价格排行</h2>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>品牌车型</th>
+                            <th>平均价格</th>
+                            <th>价格变化</th>
+                            <th>交易量</th>
+                            <th>保值率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>丰田凯美瑞</td>
+                            <td>¥15.8万</td>
+                            <td style="color: #28a745;">+3.2%</td>
+                            <td>1,234</td>
+                            <td>78%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>本田雅阁</td>
+                            <td>¥14.5万</td>
+                            <td style="color: #28a745;">+2.8%</td>
+                            <td>1,156</td>
+                            <td>75%</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>大众帕萨特</td>
+                            <td>¥13.2万</td>
+                            <td style="color: #dc3545;">-1.5%</td>
+                            <td>987</td>
+                            <td>72%</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>宝马3系</td>
+                            <td>¥22.8万</td>
+                            <td style="color: #28a745;">+4.1%</td>
+                            <td>756</td>
+                            <td>68%</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>奔驰C级</td>
+                            <td>¥25.6万</td>
+                            <td style="color: #28a745;">+3.7%</td>
+                            <td>623</td>
+                            <td>70%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer style="background-color: #333; color: white; text-align: center; padding: 2rem 0;">
+        <div class="container">
+            <p>&copy; 2024 二手车价格预测系统. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        let priceChart, brandChart;
+
+        /**
+         * 初始化价格趋势图表
+         */
+        function initPriceChart() {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    datasets: [{
+                        label: '平均价格(万元)',
+                        data: [11.5, 11.8, 12.1, 12.3, 12.0, 12.5],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '二手车价格趋势'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+
+        /**
+         * 初始化品牌对比图表
+         */
+        function initBrandChart() {
+            const ctx = document.getElementById('brandChart').getContext('2d');
+            brandChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['丰田', '本田', '大众', '宝马', '奔驰', '奥迪'],
+                    datasets: [{
+                        label: '平均价格(万元)',
+                        data: [15.8, 14.5, 13.2, 22.8, 25.6, 21.3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 205, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                            'rgba(255, 159, 64, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '品牌价格对比'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        /**
+         * 更新趋势数据
+         */
+        function updateTrends() {
+            const brand = document.getElementById('brandSelect').value;
+            const model = document.getElementById('modelSelect').value;
+            const year = document.getElementById('yearSelect').value;
+            
+            // 模拟数据更新
+            console.log('更新趋势数据:', { brand, model, year });
+            
+            // 这里可以根据筛选条件更新图表数据
+            if (priceChart) {
+                priceChart.data.datasets[0].data = [
+                    Math.random() * 5 + 10,
+                    Math.random() * 5 + 10,
+                    Math.random() * 5 + 10,
+                    Math.random() * 5 + 10,
+                    Math.random() * 5 + 10,
+                    Math.random() * 5 + 10
+                ];
+                priceChart.update();
+            }
+            
+            alert('趋势数据已更新！实际项目中这里会连接后端API获取真实数据。');
+        }
+
+        /**
+         * 页面加载完成后初始化
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            initPriceChart();
+            initBrandChart();
+            
+            // 添加表格行悬停效果
+            const tableRows = document.querySelectorAll('table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

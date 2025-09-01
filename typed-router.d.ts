@@ -40,10 +40,14 @@ declare module 'vue-router/auto-routes' {
     '/templates/knowledge': RouteRecordInfo<'/templates/knowledge', '/templates/knowledge', Record<never, never>, Record<never, never>>,
     '/templates/stats': RouteRecordInfo<'/templates/stats', '/templates/stats', Record<never, never>, Record<never, never>>,
     '/templates/websocket': RouteRecordInfo<'/templates/websocket', '/templates/websocket', Record<never, never>, Record<never, never>>,
+    '/user/community/': RouteRecordInfo<'/user/community/', '/user/community', Record<never, never>, Record<never, never>>,
     '/user/history/': RouteRecordInfo<'/user/history/', '/user/history', Record<never, never>, Record<never, never>>,
     '/user/knowledge/': RouteRecordInfo<'/user/knowledge/', '/user/knowledge', Record<never, never>, Record<never, never>>,
     '/user/notifications/': RouteRecordInfo<'/user/notifications/', '/user/notifications', Record<never, never>, Record<never, never>>,
+    '/user/prediction/': RouteRecordInfo<'/user/prediction/', '/user/prediction', Record<never, never>, Record<never, never>>,
     '/user/system_film/': RouteRecordInfo<'/user/system_film/', '/user/system_film', Record<never, never>, Record<never, never>>,
+    '/user/training/': RouteRecordInfo<'/user/training/', '/user/training', Record<never, never>, Record<never, never>>,
+    '/user/trends/': RouteRecordInfo<'/user/trends/', '/user/trends', Record<never, never>, Record<never, never>>,
     '/userInfo/': RouteRecordInfo<'/userInfo/', '/userInfo', Record<never, never>, Record<never, never>>,
   }
 
@@ -146,6 +150,10 @@ declare module 'vue-router/auto-routes' {
       routes: '/templates/websocket'
       views: never
     }
+    'src/pages/user/community/index.vue': {
+      routes: '/user/community/'
+      views: never
+    }
     'src/pages/user/history/index.vue': {
       routes: '/user/history/'
       views: never
@@ -158,8 +166,20 @@ declare module 'vue-router/auto-routes' {
       routes: '/user/notifications/'
       views: never
     }
+    'src/pages/user/prediction/index.vue': {
+      routes: '/user/prediction/'
+      views: never
+    }
     'src/pages/user/system_film/index.vue': {
       routes: '/user/system_film/'
+      views: never
+    }
+    'src/pages/user/training/index.vue': {
+      routes: '/user/training/'
+      views: never
+    }
+    'src/pages/user/trends/index.vue': {
+      routes: '/user/trends/'
       views: never
     }
     'src/pages/userInfo/index.vue': {

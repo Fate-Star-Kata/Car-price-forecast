@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型训练 - 二手车价格预测系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">🚗 二手车价格预测</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="prediction.html">价格预测</a></li>
+                    <li><a href="trends.html">价格趋势</a></li>
+                    <li><a href="training.html" style="background-color: rgba(255,255,255,0.2);">模型训练</a></li>
+                    <li><a href="community.html">社区交流</a></li>
+                    <li><a href="admin.html">管理后台</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main style="padding: 2rem 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; color: #333;">模型训练中心</h1>
+            
+            <!-- 训练状态概览 -->
+            <div class="grid grid-4" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">训练中模型</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">已完成模型</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95.8%</div>
+                    <div class="stat-label">最佳准确率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2.5h</div>
+                    <div class="stat-label">平均训练时间</div>
+                </div>
+            </div>
+            
+            <!-- 数据上传区域 -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">数据上传</h2>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label">选择训练数据文件</label>
+                        <input type="file" class="form-control" id="trainingFile" accept=".csv,.xlsx,.json">
+                        <small style="color: #666; margin-top: 5px; display: block;">支持CSV、Excel、JSON格式，文件大小不超过100MB</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">数据集描述</label>
+                        <textarea class="form-control" id="dataDescription" rows="3" placeholder="请描述数据集的来源、特征等信息..."></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="uploadTrainingData()">上传数据</button>
+            </div>
+            
+            <!-- 模型配置 -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h2 class="card-title">模型配置</h2>
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label class="form-label">算法类型</label>
+                        <select class="form-control form-select" id="algorithmType">
+                            <option value="random_forest">随机森林</option>
+                            <option value="gradient_boosting">梯度提升</option>
+                            <option value="neural_network">神经网络</option>
+                            <option value="linear_regression">线性回归</option>
+                            <option value="svm">支持向量机</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">训练轮数</label>
+                        <input type="number" class="form-control" id="epochs" value="100" min="10" max="1000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">学习率</label>
+                        <input type="number" class="form-control" id="learningRate" value="0.01" min="0.001" max="1" step="0.001">
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label">验证集比例</label>
+                        <input type="range" class="form-control" id="validationSplit" min="0.1" max="0.5" step="0.05" value="0.2">
+                        <small style="color: #666;">当前值: <span id="validationValue">20%</span></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">模型名称</label>
+                        <input type="text" class="form-control" id="modelName" placeholder="输入模型名称...">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="startTraining()">开始训练</button>
+            </div>
+            
+            <!-- 训练进度 -->
+            <div class="card" style="margin-bottom: 2rem; display: none;" id="trainingProgress">
+                <div class="card-header">
+                    <h2 class="card-title">训练进度</h2>
+                </div>
+                <div class="progress-container" style="margin-bottom: 1rem;">
+                    <div class="progress-bar" style="width: 0%; background-color: #007bff; height: 20px; border-radius: 10px; transition: width 0.3s ease;"></div>
+                </div>
+                <div class="grid grid-3">
+                    <div>
+                        <strong>当前轮数:</strong> <span id="currentEpoch">0</span> / <span id="totalEpochs">100</span>
+                    </div>
+                    <div>
+                        <strong>训练损失:</strong> <span id="trainingLoss">0.000</span>
+                    </div>
+                    <div>
+                        <strong>验证准确率:</strong> <span id="validationAccuracy">0.00%</span>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button class="btn btn-danger" onclick="stopTraining()">停止训练</button>
+                </div>
+            </div>
+            
+            <!-- 我的模型列表 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">我的模型</h2>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>模型名称</th>
+                            <th>算法类型</th>
+                            <th>准确率</th>
+                            <th>训练时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>我的随机森林模型_v1</td>
+                            <td>Random Forest</td>
+                            <td>92.5%</td>
+                            <td>2024-01-20 14:30</td>
+                            <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">已完成</span></td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;" onclick="useModel('model1')">使用</button>
+                                <button class="btn btn-info" style="padding: 6px 12px; margin-right: 5px;" onclick="downloadModel('model1')">下载</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px;" onclick="deleteModel('model1')">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>神经网络实验_v2</td>
+                            <td>Neural Network</td>
+                            <td>89.3%</td>
+                            <td>2024-01-18 09:15</td>
+                            <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">已完成</span></td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;" onclick="useModel('model2')">使用</button>
+                                <button class="btn btn-info" style="padding: 6px 12px; margin-right: 5px;" onclick="downloadModel('model2')">下载</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px;" onclick="deleteModel('model2')">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>梯度提升测试</td>
+                            <td>Gradient Boosting</td>
+                            <td>-</td>
+                            <td>2024-01-20 16:45</td>
+                            <td><span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px; font-size: 12px;">训练中</span></td>
+                            <td>
+                                <button class="btn btn-warning" style="padding: 6px 12px; margin-right: 5px;" onclick="viewProgress('model3')">查看进度</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px;" onclick="stopTraining('model3')">停止</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer style="background-color: #333; color: white; text-align: center; padding: 2rem 0;">
+        <div class="container">
+            <p>&copy; 2024 二手车价格预测系统. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        let trainingInterval;
+
+        /**
+         * 上传训练数据
+         */
+        function uploadTrainingData() {
+            const fileInput = document.getElementById('trainingFile');
+            const description = document.getElementById('dataDescription').value;
+            
+            if (!fileInput.files.length) {
+                alert('请选择要上传的数据文件');
+                return;
+            }
+            
+            if (!description.trim()) {
+                alert('请填写数据集描述');
+                return;
+            }
+            
+            // 模拟上传过程
+            console.log('上传数据:', {
+                file: fileInput.files[0].name,
+                description: description
+            });
+            
+            alert('数据上传成功！实际项目中这里会连接后端API处理文件上传。');
+        }
+
+        /**
+         * 开始训练模型
+         */
+        function startTraining() {
+            const algorithm = document.getElementById('algorithmType').value;
+            const epochs = document.getElementById('epochs').value;
+            const learningRate = document.getElementById('learningRate').value;
+            const validationSplit = document.getElementById('validationSplit').value;
+            const modelName = document.getElementById('modelName').value;
+            
+            if (!modelName.trim()) {
+                alert('请输入模型名称');
+                return;
+            }
+            
+            // 显示训练进度区域
+            const progressDiv = document.getElementById('trainingProgress');
+            progressDiv.style.display = 'block';
+            
+            // 重置进度
+            document.getElementById('totalEpochs').textContent = epochs;
+            document.getElementById('currentEpoch').textContent = '0';
+            document.getElementById('trainingLoss').textContent = '0.000';
+            document.getElementById('validationAccuracy').textContent = '0.00%';
+            document.querySelector('.progress-bar').style.width = '0%';
+            
+            // 模拟训练过程
+            let currentEpoch = 0;
+            trainingInterval = setInterval(() => {
+                currentEpoch++;
+                const progress = (currentEpoch / epochs) * 100;
+                
+                document.getElementById('currentEpoch').textContent = currentEpoch;
+                document.getElementById('trainingLoss').textContent = (Math.random() * 0.5 + 0.1).toFixed(3);
+                document.getElementById('validationAccuracy').textContent = (Math.random() * 10 + 85).toFixed(2) + '%';
+                document.querySelector('.progress-bar').style.width = progress + '%';
+                
+                if (currentEpoch >= epochs) {
+                    clearInterval(trainingInterval);
+                    alert('模型训练完成！');
+                    progressDiv.style.display = 'none';
+                }
+            }, 100);
+            
+            console.log('开始训练:', {
+                algorithm, epochs, learningRate, validationSplit, modelName
+            });
+        }
+
+        /**
+         * 停止训练
+         */
+        function stopTraining(modelId = null) {
+            if (trainingInterval) {
+                clearInterval(trainingInterval);
+                document.getElementById('trainingProgress').style.display = 'none';
+            }
+            
+            if (modelId) {
+                console.log('停止模型训练:', modelId);
+            }
+            
+            alert('训练已停止');
+        }
+
+        /**
+         * 使用模型进行预测
+         */
+        function useModel(modelId) {
+            console.log('使用模型:', modelId);
+            if (confirm('确定要将此模型设为默认预测模型吗？')) {
+                alert('模型已设置为默认预测模型');
+            }
+        }
+
+        /**
+         * 下载模型
+         */
+        function downloadModel(modelId) {
+            console.log('下载模型:', modelId);
+            alert('模型下载功能已触发，实际项目中这里会提供模型文件下载');
+        }
+
+        /**
+         * 删除模型
+         */
+        function deleteModel(modelId) {
+            if (confirm('确定要删除此模型吗？此操作不可恢复。')) {
+                console.log('删除模型:', modelId);
+                alert('模型已删除');
+            }
+        }
+
+        /**
+         * 查看训练进度
+         */
+        function viewProgress(modelId) {
+            console.log('查看进度:', modelId);
+            alert('查看训练进度功能，实际项目中这里会显示详细的训练日志');
+        }
+
+        /**
+         * 页面初始化
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // 验证集比例滑块事件
+            const validationSlider = document.getElementById('validationSplit');
+            const validationValue = document.getElementById('validationValue');
+            
+            validationSlider.addEventListener('input', function() {
+                validationValue.textContent = Math.round(this.value * 100) + '%';
+            });
+            
+            // 添加表格行悬停效果
+            const tableRows = document.querySelectorAll('table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

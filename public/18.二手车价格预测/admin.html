@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 二手车价格预测系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">🚗 管理后台</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">返回前台</a></li>
+                    <li><a href="#" onclick="showSection('users')" style="background-color: rgba(255,255,255,0.2);">用户管理</a></li>
+                    <li><a href="#" onclick="showSection('data')">数据管理</a></li>
+                    <li><a href="#" onclick="showSection('models')">模型管理</a></li>
+                    <li><a href="#" onclick="showSection('community')">社区管理</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main style="padding: 2rem 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <!-- 用户管理部分 -->
+            <div id="users-section" class="admin-section">
+                <h1 style="margin-bottom: 2rem; color: #333;">用户管理</h1>
+                
+                <!-- 统计卡片 -->
+                <div class="grid grid-4" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">10,245</div>
+                        <div class="stat-label">总用户数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-label">活跃用户</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">新增用户(本月)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">被封禁用户</div>
+                    </div>
+                </div>
+                
+                <!-- 用户搜索和筛选 -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <h2 class="card-title">用户搜索</h2>
+                    </div>
+                    <div class="grid grid-4">
+                        <div class="form-group">
+                            <label class="form-label">用户名/邮箱</label>
+                            <input type="text" class="form-control" placeholder="搜索用户...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">用户状态</label>
+                            <select class="form-control form-select">
+                                <option value="">全部状态</option>
+                                <option value="active">活跃</option>
+                                <option value="inactive">非活跃</option>
+                                <option value="banned">已封禁</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">注册时间</label>
+                            <select class="form-control form-select">
+                                <option value="">全部时间</option>
+                                <option value="today">今天</option>
+                                <option value="week">本周</option>
+                                <option value="month">本月</option>
+                                <option value="year">本年</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="visibility: hidden;">操作</label>
+                            <button class="btn btn-primary" style="width: 100%;">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 用户列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">用户列表</h2>
+                        <button class="btn btn-primary">添加用户</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>用户ID</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>注册时间</th>
+                                <th>最后登录</th>
+                                <th>预测次数</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>张三</td>
+                                <td>zhangsan@email.com</td>
+                                <td>2024-01-15</td>
+                                <td>2024-01-20 14:30</td>
+                                <td>25</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">活跃</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">编辑</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">封禁</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td>李四</td>
+                                <td>lisi@email.com</td>
+                                <td>2024-01-10</td>
+                                <td>2024-01-19 09:15</td>
+                                <td>42</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">活跃</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">编辑</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">封禁</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>003</td>
+                                <td>王五</td>
+                                <td>wangwu@email.com</td>
+                                <td>2024-01-05</td>
+                                <td>2024-01-18 16:45</td>
+                                <td>18</td>
+                                <td><span style="background-color: #6c757d; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">非活跃</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">编辑</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">封禁</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>004</td>
+                                <td>赵六</td>
+                                <td>zhaoliu@email.com</td>
+                                <td>2023-12-20</td>
+                                <td>2024-01-15 11:20</td>
+                                <td>67</td>
+                                <td><span style="background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">已封禁</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">编辑</button>
+                                    <button class="btn btn-success" style="padding: 6px 12px;">解封</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>005</td>
+                                <td>孙七</td>
+                                <td>sunqi@email.com</td>
+                                <td>2024-01-18</td>
+                                <td>2024-01-20 10:05</td>
+                                <td>3</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">活跃</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">编辑</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">封禁</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- 分页 -->
+                    <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                        <button class="btn btn-secondary" style="margin: 0 5px;">上一页</button>
+                        <button class="btn btn-primary" style="margin: 0 5px;">1</button>
+                        <button class="btn btn-secondary" style="margin: 0 5px;">2</button>
+                        <button class="btn btn-secondary" style="margin: 0 5px;">3</button>
+                        <button class="btn btn-secondary" style="margin: 0 5px;">下一页</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 数据管理部分 -->
+            <div id="data-section" class="admin-section" style="display: none;">
+                <h1 style="margin-bottom: 2rem; color: #333;">数据管理</h1>
+                
+                <!-- 数据统计 -->
+                <div class="grid grid-4" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">1.2M</div>
+                        <div class="stat-label">总数据量</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">850K</div>
+                        <div class="stat-label">训练数据</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">350K</div>
+                        <div class="stat-label">测试数据</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95.2%</div>
+                        <div class="stat-label">数据质量</div>
+                    </div>
+                </div>
+                
+                <!-- 数据上传 -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <h2 class="card-title">数据上传</h2>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">选择文件</label>
+                            <input type="file" class="form-control" accept=".csv,.xlsx,.json">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">数据类型</label>
+                            <select class="form-control form-select">
+                                <option value="training">训练数据</option>
+                                <option value="testing">测试数据</option>
+                                <option value="validation">验证数据</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">上传数据</button>
+                </div>
+                
+                <!-- 数据集列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">数据集列表</h2>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>数据集名称</th>
+                                <th>类型</th>
+                                <th>记录数</th>
+                                <th>上传时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>二手车数据集_v1.0</td>
+                                <td>训练数据</td>
+                                <td>850,000</td>
+                                <td>2024-01-15</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">已处理</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">查看</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">删除</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>测试数据集_2024</td>
+                                <td>测试数据</td>
+                                <td>350,000</td>
+                                <td>2024-01-10</td>
+                                <td><span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px; font-size: 12px;">处理中</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">查看</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 模型管理部分 -->
+            <div id="models-section" class="admin-section" style="display: none;">
+                <h1 style="margin-bottom: 2rem; color: #333;">模型管理</h1>
+                
+                <!-- 模型统计 -->
+                <div class="grid grid-4" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">总模型数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">生产模型</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95.8%</div>
+                        <div class="stat-label">最佳准确率</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2.3s</div>
+                        <div class="stat-label">平均响应时间</div>
+                    </div>
+                </div>
+                
+                <!-- 模型列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">模型列表</h2>
+                        <button class="btn btn-primary">训练新模型</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>模型名称</th>
+                                <th>算法类型</th>
+                                <th>准确率</th>
+                                <th>训练时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>随机森林模型_v2.1</td>
+                                <td>Random Forest</td>
+                                <td>95.8%</td>
+                                <td>2024-01-15</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">生产中</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">详情</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">停用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>梯度提升模型_v1.5</td>
+                                <td>Gradient Boosting</td>
+                                <td>94.2%</td>
+                                <td>2024-01-12</td>
+                                <td><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">生产中</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">详情</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">停用</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>神经网络模型_v3.0</td>
+                                <td>Neural Network</td>
+                                <td>93.7%</td>
+                                <td>2024-01-08</td>
+                                <td><span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px; font-size: 12px;">训练中</span></td>
+                                <td>
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;">详情</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">停止</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 社区管理部分 -->
+            <div id="community-section" class="admin-section" style="display: none;">
+                <h1 style="margin-bottom: 2rem; color: #333;">社区管理</h1>
+                
+                <!-- 社区统计 -->
+                <div class="grid grid-4" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">2,456</div>
+                        <div class="stat-label">总帖子数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8,923</div>
+                        <div class="stat-label">总评论数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">待审核内容</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">举报内容</div>
+                    </div>
+                </div>
+                
+                <!-- 内容审核 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">内容审核</h2>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>内容类型</th>
+                                <th>标题/内容</th>
+                                <th>发布者</th>
+                                <th>发布时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>帖子</td>
+                                <td>关于二手车保值率的讨论</td>
+                                <td>用户001</td>
+                                <td>2024-01-20 14:30</td>
+                                <td><span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px; font-size: 12px;">待审核</span></td>
+                                <td>
+                                    <button class="btn btn-success" style="padding: 6px 12px; margin-right: 5px;">通过</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">拒绝</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>评论</td>
+                                <td>这个价格预测很准确！</td>
+                                <td>用户002</td>
+                                <td>2024-01-20 13:15</td>
+                                <td><span style="background-color: #ffc107; color: black; padding: 4px 8px; border-radius: 4px; font-size: 12px;">待审核</span></td>
+                                <td>
+                                    <button class="btn btn-success" style="padding: 6px 12px; margin-right: 5px;">通过</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">拒绝</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>帖子</td>
+                                <td>二手车购买指南分享</td>
+                                <td>用户003</td>
+                                <td>2024-01-20 11:45</td>
+                                <td><span style="background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">已举报</span></td>
+                                <td>
+                                    <button class="btn btn-warning" style="padding: 6px 12px; margin-right: 5px;">查看详情</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px;">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->    
+    <footer style="background-color: #333; color: white; text-align: center; padding: 2rem 0; margin-top: 3rem;">
+        <div class="container">
+            <p>&copy; 2024 二手车价格预测系统管理后台. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * 显示指定的管理部分
+         * @param {string} section - 要显示的部分名称
+         */
+        function showSection(section) {
+            // 隐藏所有部分
+            const sections = document.querySelectorAll('.admin-section');
+            sections.forEach(s => s.style.display = 'none');
+            
+            // 移除所有导航项的激活状态
+            const navItems = document.querySelectorAll('.nav-menu a');
+            navItems.forEach(item => {
+                item.style.backgroundColor = 'transparent';
+            });
+            
+            // 显示选中的部分
+            const targetSection = document.getElementById(section + '-section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // 激活对应的导航项
+            const activeNav = document.querySelector(`[onclick="showSection('${section}')"]`);
+            if (activeNav) {
+                activeNav.style.backgroundColor = 'rgba(255,255,255,0.2)';
+            }
+        }
+
+        /**
+         * 页面加载完成后的初始化函数
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认显示用户管理部分
+            showSection('users');
+            
+            // 添加表格行点击效果
+            const tableRows = document.querySelectorAll('table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+            });
+            
+            // 添加按钮点击确认
+            const dangerButtons = document.querySelectorAll('.btn-danger');
+            dangerButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!confirm('确定要执行此操作吗？')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+
+        /**
+         * 搜索用户功能
+         */
+        function searchUsers() {
+            const searchInput = document.querySelector('#users-section input[type="text"]');
+            const statusSelect = document.querySelector('#users-section select');
+            
+            // 这里可以添加实际的搜索逻辑
+            console.log('搜索用户:', {
+                keyword: searchInput.value,
+                status: statusSelect.value
+            });
+            
+            alert('搜索功能已触发，实际项目中这里会连接后端API');
+        }
+
+        /**
+         * 上传数据功能
+         */
+        function uploadData() {
+            const fileInput = document.querySelector('#data-section input[type="file"]');
+            const typeSelect = document.querySelector('#data-section select');
+            
+            if (!fileInput.files.length) {
+                alert('请选择要上传的文件');
+                return;
+            }
+            
+            // 这里可以添加实际的上传逻辑
+            console.log('上传数据:', {
+                file: fileInput.files[0].name,
+                type: typeSelect.value
+            });
+            
+            alert('数据上传功能已触发，实际项目中这里会连接后端API');
+        }
+
+        /**
+         * 训练新模型功能
+         */
+        function trainNewModel() {
+            if (confirm('确定要开始训练新模型吗？这可能需要较长时间。')) {
+                alert('模型训练已开始，实际项目中这里会连接后端API');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>价格预测 - 二手车价格预测系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">🚗 二手车价格预测</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="prediction.html" style="background-color: rgba(255,255,255,0.2);">价格预测</a></li>
+                    <li><a href="trends.html">价格趋势</a></li>
+                    <li><a href="training.html">模型训练</a></li>
+                    <li><a href="community.html">社区交流</a></li>
+                    <li><a href="admin.html">管理后台</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main style="padding: 2rem 0; min-height: calc(100vh - 200px);">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 2rem; color: #333;">二手车价格预测</h1>
+            
+            <div class="grid grid-2">
+                <!-- 车辆信息输入表单 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">车辆信息</h2>
+                        <p style="color: #666;">请填写车辆详细信息以获得准确的价格预测</p>
+                    </div>
+                    
+                    <form id="predictionForm">
+                        <div class="form-group">
+                            <label class="form-label">品牌</label>
+                            <select class="form-control form-select" id="brand" required>
+                                <option value="">请选择品牌</option>
+                                <option value="toyota">丰田</option>
+                                <option value="honda">本田</option>
+                                <option value="volkswagen">大众</option>
+                                <option value="bmw">宝马</option>
+                                <option value="mercedes">奔驰</option>
+                                <option value="audi">奥迪</option>
+                                <option value="nissan">日产</option>
+                                <option value="hyundai">现代</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">车型</label>
+                            <select class="form-control form-select" id="model" required>
+                                <option value="">请先选择品牌</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">年份</label>
+                            <select class="form-control form-select" id="year" required>
+                                <option value="">请选择年份</option>
+                                <option value="2023">2023年</option>
+                                <option value="2022">2022年</option>
+                                <option value="2021">2021年</option>
+                                <option value="2020">2020年</option>
+                                <option value="2019">2019年</option>
+                                <option value="2018">2018年</option>
+                                <option value="2017">2017年</option>
+                                <option value="2016">2016年</option>
+                                <option value="2015">2015年</option>
+                                <option value="2014">2014年</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">里程数 (万公里)</label>
+                            <input type="number" class="form-control" id="mileage" placeholder="请输入里程数" min="0" max="50" step="0.1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">排量 (L)</label>
+                            <select class="form-control form-select" id="displacement" required>
+                                <option value="">请选择排量</option>
+                                <option value="1.0">1.0L</option>
+                                <option value="1.2">1.2L</option>
+                                <option value="1.4">1.4L</option>
+                                <option value="1.5">1.5L</option>
+                                <option value="1.6">1.6L</option>
+                                <option value="1.8">1.8L</option>
+                                <option value="2.0">2.0L</option>
+                                <option value="2.4">2.4L</option>
+                                <option value="3.0">3.0L</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">变速箱类型</label>
+                            <select class="form-control form-select" id="transmission" required>
+                                <option value="">请选择变速箱类型</option>
+                                <option value="manual">手动挡</option>
+                                <option value="automatic">自动挡</option>
+                                <option value="cvt">CVT无级变速</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">车辆状况</label>
+                            <select class="form-control form-select" id="condition" required>
+                                <option value="">请选择车辆状况</option>
+                                <option value="excellent">极佳</option>
+                                <option value="good">良好</option>
+                                <option value="fair">一般</option>
+                                <option value="poor">较差</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">所在城市</label>
+                            <select class="form-control form-select" id="city" required>
+                                <option value="">请选择城市</option>
+                                <option value="beijing">北京</option>
+                                <option value="shanghai">上海</option>
+                                <option value="guangzhou">广州</option>
+                                <option value="shenzhen">深圳</option>
+                                <option value="hangzhou">杭州</option>
+                                <option value="nanjing">南京</option>
+                                <option value="chengdu">成都</option>
+                                <option value="wuhan">武汉</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- 模型选择和预测结果 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">预测模型选择</h2>
+                        <p style="color: #666;">选择合适的预测模型获得最佳结果</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">预测模型</label>
+                        <select class="form-control form-select" id="model-select">
+                            <option value="random-forest">随机森林模型 (推荐)</option>
+                            <option value="gradient-boost">梯度提升模型</option>
+                            <option value="neural-network">神经网络模型</option>
+                            <option value="linear-regression">线性回归模型</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin: 2rem 0;">
+                        <button type="button" class="btn btn-primary" id="predictBtn" style="width: 100%; font-size: 1.1rem; padding: 15px;">开始预测</button>
+                    </div>
+                    
+                    <!-- 预测结果显示区域 -->
+                    <div id="predictionResult" style="display: none;">
+                        <div class="alert alert-success">
+                            <h3 style="margin-bottom: 1rem;">预测结果</h3>
+                            <div style="text-align: center; margin: 2rem 0;">
+                                <div style="font-size: 3rem; font-weight: bold; color: #28a745;" id="predictedPrice">¥ 0</div>
+                                <div style="color: #666; margin-top: 0.5rem;">预测价格</div>
+                            </div>
+                            
+                            <div class="grid grid-2" style="margin-top: 2rem;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #667eea;" id="confidence">0%</div>
+                                    <div style="color: #666;">置信度</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #667eea;" id="priceRange">¥ 0 - ¥ 0</div>
+                                    <div style="color: #666;">价格区间</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 2rem;">
+                                <h4>影响因素分析</h4>
+                                <div id="factorAnalysis">
+                                    <div style="margin: 1rem 0;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                            <span>车龄影响</span>
+                                            <span>35%</span>
+                                        </div>
+                                        <div style="background-color: #f0f0f0; height: 8px; border-radius: 4px;">
+                                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 35%; border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 1rem 0;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                            <span>里程数影响</span>
+                                            <span>25%</span>
+                                        </div>
+                                        <div style="background-color: #f0f0f0; height: 8px; border-radius: 4px;">
+                                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 25%; border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 1rem 0;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                            <span>品牌影响</span>
+                                            <span>20%</span>
+                                        </div>
+                                        <div style="background-color: #f0f0f0; height: 8px; border-radius: 4px;">
+                                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 20%; border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 1rem 0;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                            <span>其他因素</span>
+                                            <span>20%</span>
+                                        </div>
+                                        <div style="background-color: #f0f0f0; height: 8px; border-radius: 4px;">
+                                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; width: 20%; border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 加载状态 -->
+                    <div id="loadingState" style="display: none; text-align: center; padding: 2rem;">
+                        <div class="loading" style="margin: 0 auto 1rem;"></div>
+                        <p>正在分析车辆信息，请稍候...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 品牌和车型的映射关系
+        const brandModels = {
+            'toyota': ['凯美瑞', '卡罗拉', '汉兰达', '普拉多', 'RAV4'],
+            'honda': ['雅阁', '思域', 'CR-V', '奥德赛', '飞度'],
+            'volkswagen': ['帕萨特', '迈腾', '朗逸', '途观', '高尔夫'],
+            'bmw': ['3系', '5系', 'X3', 'X5', '1系'],
+            'mercedes': ['C级', 'E级', 'S级', 'GLC', 'GLE'],
+            'audi': ['A4L', 'A6L', 'Q5', 'Q7', 'A3'],
+            'nissan': ['天籁', '轩逸', '奇骏', '逍客', '阳光'],
+            'hyundai': ['索纳塔', '伊兰特', '途胜', '胜达', '瑞纳']
+        };
+
+        // 品牌选择变化时更新车型选项
+        document.getElementById('brand').addEventListener('change', function() {
+            const brand = this.value;
+            const modelSelect = document.getElementById('model');
+            
+            // 清空车型选项
+            modelSelect.innerHTML = '<option value="">请选择车型</option>';
+            
+            if (brand && brandModels[brand]) {
+                brandModels[brand].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+        });
+
+        // 预测按钮点击事件
+        document.getElementById('predictBtn').addEventListener('click', function() {
+            const form = document.getElementById('predictionForm');
+            
+            // 验证表单
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // 显示加载状态
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('predictionResult').style.display = 'none';
+            
+            // 模拟预测过程
+            setTimeout(() => {
+                // 隐藏加载状态
+                document.getElementById('loadingState').style.display = 'none';
+                
+                // 生成模拟预测结果
+                const basePrice = Math.random() * 200000 + 50000; // 5万到25万之间
+                const predictedPrice = Math.round(basePrice);
+                const confidence = Math.round(Math.random() * 20 + 80); // 80-100%
+                const priceMin = Math.round(predictedPrice * 0.9);
+                const priceMax = Math.round(predictedPrice * 1.1);
+                
+                // 更新预测结果
+                document.getElementById('predictedPrice').textContent = `¥ ${predictedPrice.toLocaleString()}`;
+                document.getElementById('confidence').textContent = `${confidence}%`;
+                document.getElementById('priceRange').textContent = `¥ ${priceMin.toLocaleString()} - ¥ ${priceMax.toLocaleString()}`;
+                
+                // 显示预测结果
+                document.getElementById('predictionResult').style.display = 'block';
+                document.getElementById('predictionResult').scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
