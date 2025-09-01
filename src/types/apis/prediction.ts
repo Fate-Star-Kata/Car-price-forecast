@@ -2,14 +2,14 @@
 
 // 车辆基本信息
 export interface VehicleInfo {
-  brand: string // 品牌
-  model: string // 车型
-  year: number // 年份
-  mileage: number // 里程数（万公里）
-  displacement: number // 排量（L）
-  transmission: string // 变速箱类型
-  condition: string // 车辆状况
-  city: string // 所在城市
+  brand: string; // 品牌
+  model: string; // 车型
+  year: number; // 年份
+  mileage: number; // 里程数（万公里）
+  displacement: number; // 排量（L）
+  transmission: string; // 变速箱类型
+  condition: string; // 车辆状况
+  city: string; // 所在城市
 }
 
 // 预测请求参数
@@ -33,8 +33,14 @@ export interface PredictionResult {
     min: number // 最低价格
     max: number // 最高价格
   }
-  influence_factors: InfluenceFactor[] // 影响因素分析
-  model_accuracy: number // 模型准确率
+  factor_analysis: {
+    age_impact: number // 车龄影响
+    mileage_impact: number // 里程影响
+    brand_impact: number // 品牌影响
+    other_impact: number // 其他影响
+  }
+  model_used: string // 使用的模型
+  market_insights: any // 市场洞察
 }
 
 // 预测响应
@@ -55,6 +61,7 @@ export interface PredictionHistory {
   id: number
   vehicle_info: VehicleInfo
   predicted_price: number
+  confidence: number
   model_type: string
   created_at: string
 }
