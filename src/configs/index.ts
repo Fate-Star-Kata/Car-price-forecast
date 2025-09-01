@@ -65,6 +65,7 @@ export const defaultMenuItems: MenuItem[] = [
     id: 'templates',
     label: 'menu.templates',
     href: '/templates',
+    hide: true,
     children: [
       {
         id: 'dashboard',

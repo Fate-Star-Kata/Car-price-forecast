@@ -127,12 +127,11 @@
 
           <div class="flex gap-2">
             <div class="form-control">
-              <div class="input-group">
+              <div class="input-group flex">
                 <input v-model="searchQuery" type="text" placeholder="搜索帖子..." class="input input-bordered input-sm">
                 <button @click="searchPosts" class="btn btn-square btn-sm">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                   </svg>
                 </button>
               </div>
@@ -143,7 +142,7 @@
         <!-- 帖子列表 -->
         <div class="space-y-4">
           <div v-for="post in filteredPosts" :key="post.id"
-            class="card bg-base-200 shadow hover:shadow-lg transition-shadow cursor-pointer" @click="viewPost(post)">
+            class="card bg-base-200 shadow hover:shadow-lg transition-shadow cursor-pointer" @click="openPostDetail(post)">
             <div class="card-body">
               <div class="flex items-start gap-4">
                 <!-- 用户头像 -->
@@ -157,8 +156,7 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-2 mb-2">
                     <h3 class="font-semibold text-lg truncate">{{ post.title }}</h3>
-                    <div class="badge badge-sm" :class="getCategoryBadgeClass(post.category)">{{
-                      getCategoryText(post.category) }}</div>
+                    <div class="badge badge-sm" :class="getCategoryBadgeClass(post.category)">{{ getCategoryText(post.category) }}</div>
                     <div v-if="post.is_pinned" class="badge badge-warning badge-sm">置顶</div>
                   </div>
 
@@ -313,6 +311,198 @@
         </form>
       </div>
     </div>
+
+    <!-- 帖子详情模态框 -->
+    <div v-if="showPostDetail && selectedPost" class="modal modal-open">
+      <div class="modal-box max-w-6xl max-h-[90vh] overflow-y-auto">
+        <!-- 帖子详情头部 -->
+        <div class="flex justify-between items-start mb-6">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="font-bold text-xl">{{ selectedPost.title }}</h3>
+              <div class="badge badge-sm" :class="getCategoryBadgeClass(selectedPost.category)">
+                {{ getCategoryText(selectedPost.category) }}
+              </div>
+              <div v-if="selectedPost.is_pinned" class="badge badge-warning badge-sm">置顶</div>
+            </div>
+            
+            <div class="flex items-center gap-4 text-sm text-base-content/60 mb-4">
+              <div class="flex items-center gap-2">
+                <div class="avatar">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span class="text-primary font-semibold text-xs">
+                      {{ selectedPost.author.username.charAt(0).toUpperCase() }}
+                    </span>
+                  </div>
+                </div>
+                <span class="font-medium">{{ selectedPost.author.username }}</span>
+                <span class="badge badge-ghost badge-xs">声望: {{ selectedPost.author.reputation }}</span>
+              </div>
+              
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>{{ formatDate(selectedPost.created_at) }}</span>
+              </div>
+              
+              <div class="flex items-center gap-4">
+                <span>{{ selectedPost.view_count }} 浏览</span>
+                <span>{{ selectedPost.reply_count }} 回复</span>
+                <span>{{ selectedPost.like_count }} 点赞</span>
+              </div>
+            </div>
+          </div>
+          
+          <button @click="closePostDetail" class="btn btn-ghost btn-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- 帖子内容 -->
+        <div class="bg-base-200 rounded-lg p-6 mb-6">
+          <div class="prose max-w-none">
+            <p class="whitespace-pre-wrap">{{ selectedPost.content }}</p>
+          </div>
+          
+          <!-- 标签 -->
+          <div v-if="selectedPost.tags && selectedPost.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
+            <span v-for="tag in selectedPost.tags" :key="tag" class="badge badge-outline badge-sm">{{ tag }}</span>
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="flex items-center gap-4 mb-6">
+          <button @click="toggleLike(selectedPost)" class="btn btn-sm" 
+            :class="selectedPost.is_liked ? 'btn-primary' : 'btn-outline'">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+              </path>
+            </svg>
+            {{ selectedPost.is_liked ? '已点赞' : '点赞' }} ({{ selectedPost.like_count }})
+          </button>
+          
+          <button @click="showReplyForm = !showReplyForm" class="btn btn-outline btn-sm">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+              </path>
+            </svg>
+            回复
+          </button>
+          
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost btn-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+              </svg>
+            </label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+              <li><a @click="reportPost(selectedPost.id)">举报</a></li>
+              <li><a @click="sharePost(selectedPost)">分享</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 回复表单 -->
+        <div v-if="showReplyForm" class="bg-base-200 rounded-lg p-4 mb-6">
+          <form @submit.prevent="submitReply" class="space-y-4">
+            <div class="form-control">
+              <textarea v-model="replyContent" class="textarea textarea-bordered" 
+                placeholder="写下您的回复..." rows="4" required></textarea>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button @click="showReplyForm = false" type="button" class="btn btn-ghost btn-sm">取消</button>
+              <button type="submit" class="btn btn-primary btn-sm" :disabled="isSubmittingReply">
+                <span v-if="isSubmittingReply" class="loading loading-spinner loading-sm"></span>
+                {{ isSubmittingReply ? '发布中...' : '发布回复' }}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 回复列表 -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="font-semibold text-lg">回复 ({{ postReplies.length }})</h4>
+            <div class="dropdown">
+              <label tabindex="0" class="btn btn-outline btn-sm">
+                {{ replySort === 'latest' ? '最新' : replySort === 'oldest' ? '最早' : '最热' }}
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </label>
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                <li><a @click="replySort = 'latest'">最新</a></li>
+                <li><a @click="replySort = 'oldest'">最早</a></li>
+                <li><a @click="replySort = 'hot'">最热</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div v-if="postReplies.length === 0" class="text-center py-8 text-base-content/50">
+            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+              </path>
+            </svg>
+            <p>暂无回复，来发表第一个回复吧！</p>
+          </div>
+          
+          <div v-for="reply in sortedReplies" :key="reply.id" class="bg-base-100 rounded-lg p-4 border">
+            <div class="flex items-start gap-3">
+              <div class="avatar">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span class="text-primary font-semibold text-sm">
+                    {{ reply.author.username.charAt(0).toUpperCase() }}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="font-medium">{{ reply.author.username }}</span>
+                  <span class="badge badge-ghost badge-xs">声望: {{ reply.author.reputation }}</span>
+                  <span class="text-xs text-base-content/60">{{ formatDate(reply.created_at) }}</span>
+                </div>
+                
+                <div class="prose prose-sm max-w-none mb-3">
+                  <p class="whitespace-pre-wrap">{{ reply.content }}</p>
+                </div>
+                
+                <div class="flex items-center gap-4 text-sm">
+                  <button @click="toggleReplyLike(reply)" class="flex items-center gap-1 hover:text-primary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                      </path>
+                    </svg>
+                    <span>{{ reply.like_count }}</span>
+                  </button>
+                  
+                  <button class="hover:text-primary">回复</button>
+                  
+                  <div class="dropdown">
+                    <label tabindex="0" class="hover:text-primary cursor-pointer">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                      </svg>
+                    </label>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                      <li><a @click="reportReply(reply.id)">举报</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -325,6 +515,11 @@ import {
   type DiscussionCategory,
   SortType
 } from '@/types/factory'
+
+// 扩展PostContent接口以支持点赞功能
+interface ExtendedPostContent extends PostContent {
+  is_liked?: boolean
+}
 
 // 响应式数据
 const selectedCategory = ref<DiscussionCategory | 'all'>('all')
@@ -581,10 +776,167 @@ const goToPage = (page: number) => {
   }
 }
 
-const viewPost = (post: PostContent) => {
-  console.log('查看帖子:', post.title)
-  // 这里应该跳转到帖子详情页
+// 帖子详情相关数据
+ const showPostDetail = ref(false)
+ const selectedPost = ref<ExtendedPostContent | null>(null)
+ const showReplyForm = ref(false)
+ const replyContent = ref('')
+ const isSubmittingReply = ref(false)
+ const replySort = ref<'latest' | 'oldest' | 'hot'>('latest')
+ const postReplies = ref<any[]>([])
+ 
+ // 打开帖子详情
+  const openPostDetail = (post: ExtendedPostContent) => {
+    selectedPost.value = { ...post, is_liked: false }
+    showPostDetail.value = true
+    showReplyForm.value = false
+    loadPostReplies(post.id)
+    // 增加浏览量
+    post.view_count += 1
+  }
+
+// 关闭帖子详情
+const closePostDetail = () => {
+  showPostDetail.value = false
+  selectedPost.value = null
+  postReplies.value = []
+  replyContent.value = ''
+  showReplyForm.value = false
 }
+
+// 加载帖子回复
+const loadPostReplies = (postId: string) => {
+  // 模拟回复数据
+  postReplies.value = [
+    {
+      id: '1',
+      content: '很有用的分享，感谢楼主！',
+      author: {
+        id: '2',
+        username: '热心网友',
+        reputation: 200
+      },
+      created_at: '2024-01-16T11:00:00Z',
+      like_count: 5
+    },
+    {
+      id: '2',
+      content: '我也遇到过类似的问题，楼主说得很对。',
+      author: {
+        id: '3',
+        username: '老司机',
+        reputation: 500
+      },
+      created_at: '2024-01-16T11:30:00Z',
+      like_count: 3
+    }
+  ]
+}
+
+// 切换点赞状态
+ const toggleLike = (post: ExtendedPostContent) => {
+   if (post.is_liked) {
+     post.like_count -= 1
+     post.is_liked = false
+   } else {
+     post.like_count += 1
+     post.is_liked = true
+   }
+ }
+
+// 切换回复点赞
+const toggleReplyLike = (reply: any) => {
+  if (reply.is_liked) {
+    reply.like_count -= 1
+    reply.is_liked = false
+  } else {
+    reply.like_count += 1
+    reply.is_liked = true
+  }
+}
+
+// 提交回复
+const submitReply = async () => {
+  if (!replyContent.value.trim() || !selectedPost.value) return
+  
+  isSubmittingReply.value = true
+  
+  try {
+    const newReply = {
+      id: Date.now().toString(),
+      content: replyContent.value,
+      author: {
+        id: 'current_user',
+        username: '当前用户',
+        reputation: 100
+      },
+      created_at: new Date().toISOString(),
+      like_count: 0,
+      is_liked: false
+    }
+    
+    postReplies.value.push(newReply)
+    selectedPost.value.reply_count += 1
+    
+    // 更新原帖子数据
+    const originalPost = posts.value.find(p => p.id === selectedPost.value?.id)
+    if (originalPost) {
+      originalPost.reply_count += 1
+    }
+    
+    replyContent.value = ''
+    showReplyForm.value = false
+  } catch (error) {
+    console.error('提交回复失败:', error)
+  } finally {
+    isSubmittingReply.value = false
+  }
+}
+
+// 举报帖子
+const reportPost = (postId: string) => {
+  console.log('举报帖子:', postId)
+  // 这里应该调用举报API
+}
+
+// 举报回复
+const reportReply = (replyId: string) => {
+  console.log('举报回复:', replyId)
+  // 这里应该调用举报API
+}
+
+// 分享帖子
+ const sharePost = (post: ExtendedPostContent) => {
+   if (navigator.share) {
+     navigator.share({
+       title: post.title,
+       text: post.content.substring(0, 100) + '...',
+       url: window.location.href
+     })
+   } else {
+     // 复制链接到剪贴板
+     navigator.clipboard.writeText(window.location.href)
+     console.log('链接已复制到剪贴板')
+   }
+ }
+
+// 排序后的回复列表
+const sortedReplies = computed(() => {
+  const replies = [...postReplies.value]
+  
+  switch (replySort.value) {
+    case 'latest':
+      return replies.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    case 'oldest':
+      return replies.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    case 'hot':
+      return replies.sort((a, b) => b.like_count - a.like_count)
+    default:
+      return replies
+  }
+})
+
+
 
 const addTag = () => {
   const tag = tagInput.value.trim()
