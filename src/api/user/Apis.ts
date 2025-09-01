@@ -5,12 +5,14 @@ import type {
   GetCommunityPostsResponse,
   Post,
   CreateCommunityPostBody,
+  UpdateCommunityPostBody,
   LikeResponse,
   GetCommunityRepliesParams,
   GetCommunityRepliesResponse,
   CreateCommunityReplyBody,
   Reply,
-  Category
+  Category,
+  CommunityStats
 } from '@/types/apis/users'
 
 // 获取帖子列表
@@ -36,6 +38,15 @@ export function getPostDetail(id: number): Promise<ApiResponse<Post>> {
   return serviceAxios({
     url: `/car/community/posts/${id}`,
     method: 'get'
+  })
+}
+
+// 修改帖子
+export function updatePost(id: number, data: UpdateCommunityPostBody): Promise<ApiResponse<Post>> {
+  return serviceAxios({
+    url: `/car/community/posts/${id}`,
+    method: 'put',
+    data
   })
 }
 
@@ -77,6 +88,14 @@ export function createReply(id: number, data: CreateCommunityReplyBody): Promise
 export function getCategories(): Promise<ApiResponse<Category[]>> {
   return serviceAxios({
     url: '/car/community/categories',
+    method: 'get'
+  })
+}
+
+// 获取社区统计数据
+export function getCommunityStats(): Promise<ApiResponse<CommunityStats>> {
+  return serviceAxios({
+    url: '/car/community/stats',
     method: 'get'
   })
 }

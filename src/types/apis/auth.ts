@@ -52,7 +52,7 @@ export interface UserInfoNoToken {
   user_info?: UserDetailInfo
   ip?: string
   login_time?: Date
-  user_id?: number
+  user_id: number
 }
 
 // 登录请求参数类型

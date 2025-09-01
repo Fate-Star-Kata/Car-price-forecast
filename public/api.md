@@ -346,3 +346,44 @@ res:
 	]
 }
 ```
+
+修改帖子
+
+type:put
+path:/car/community/posts/{id}
+
+body:
+```json
+{
+	"title": "更新后的帖子标题",
+	"content": "更新后的帖子内容",
+	"category": 1
+}
+```
+
+res:
+```json
+{
+	"code": 201,
+	"msg": "帖子不存在...",
+	"data": null
+}
+```
+
+type:get
+path:/car/community/stats
+
+res:
+```json
+{
+    "code": 200,
+    "msg": null,
+    "data": {
+        "total_posts": 4,
+        "total_replies": 8,
+        "total_categories": 7,
+        "user_posts": 1,
+        "user_replies": 2
+    }
+}
+```

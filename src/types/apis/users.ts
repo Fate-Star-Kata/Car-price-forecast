@@ -51,6 +51,13 @@ export interface CreateCommunityPostBody {
   category_id: number
 }
 
+// 修改帖子请求体
+export interface UpdateCommunityPostBody {
+  title: string
+  content: string
+  category: number
+}
+
 // 点赞响应
 export interface LikeResponse {
   liked: boolean
@@ -106,4 +113,13 @@ export interface GetCommunityRepliesResponse {
   page: number
   page_size: number
   replies: Reply[]
+}
+
+// 社区统计数据类型
+export interface CommunityStats {
+  total_posts: number
+  total_replies: number
+  total_categories: number
+  user_posts: number
+  user_replies: number
 }
