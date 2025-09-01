@@ -31,83 +31,84 @@ try {
 // 主菜单配置（用于Header组件）
 export const defaultMenuItems: MenuItem[] = [
   {
-    id: 'index',
-    label: 'menu.index',
-    href: '/',
+    id: "index",
+    label: "menu.index",
+    href: "/",
     icon: null,
     hide: false,
   },
   {
-    id: 'prediction',
-    label: '价格预测',
-    href: '/user/prediction',
+    id: "prediction",
+    label: "价格预测",
+    href: "/user/prediction",
     icon: null,
   },
   {
-    id: 'trends',
-    label: '价格趋势',
-    href: '/user/trends',
+    id: "trends",
+    label: "价格趋势",
+    href: "/user/trends",
     icon: null,
   },
   {
-    id: 'training',
-    label: '模型训练',
-    href: '/user/training',
+    id: "training",
+    label: "模型训练",
+    href: "/user/training",
+    icon: null,
+    hide: true,
+  },
+  {
+    id: "community",
+    label: "社区交流",
+    href: "/user/community",
     icon: null,
   },
   {
-    id: 'community',
-    label: '社区交流',
-    href: '/user/community',
-    icon: null,
-  },
-  {
-    id: 'templates',
-    label: 'menu.templates',
-    href: '/templates',
+    id: "templates",
+    label: "menu.templates",
+    href: "/templates",
     hide: true,
     children: [
       {
-        id: 'dashboard',
-        label: 'dashboard',
-        href: '/templates/dashboard'
+        id: "dashboard",
+        label: "dashboard",
+        href: "/templates/dashboard",
       },
       {
-        id: 'analytics',
-        label: 'analytics',
-        href: '/templates/analytics'
+        id: "analytics",
+        label: "analytics",
+        href: "/templates/analytics",
       },
       {
-        id: 'knowledge',
-        label: 'knowledge',
-        href: '/templates/knowledge'
+        id: "knowledge",
+        label: "knowledge",
+        href: "/templates/knowledge",
       },
       {
-        id: 'stats',
-        label: 'stats',
-        href: '/templates/stats'
+        id: "stats",
+        label: "stats",
+        href: "/templates/stats",
       },
       {
-        id: 'websocket',
-        label: 'websocket',
-        href: '/templates/websocket'
+        id: "websocket",
+        label: "websocket",
+        href: "/templates/websocket",
       },
-    ]
+    ],
   },
   {
-    id: 'system_film',
-    label: 'menu.system_film',
-    href: '/user/system_film',
+    id: "system_film",
+    label: "menu.system_film",
+    href: "/user/system_film",
     hide: true,
     icon: null,
   },
   {
-    id: 'admin',
-    label: 'menu.admin',
-    href: '/admin',
+    id: "admin",
+    label: "menu.admin",
+    href: "/admin",
     icon: null,
   },
-]
+];
 
 // 管理后台菜单配置
 export const adminMenuItems: AdminHeader[] = [

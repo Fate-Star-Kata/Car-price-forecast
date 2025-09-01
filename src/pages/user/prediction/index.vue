@@ -31,7 +31,7 @@
                 <h2 class="text-2xl font-bold text-base-content">车辆信息录入</h2>
               </div>
 
-              <form @submit.prevent="handlePredict" class="space-y-8">
+              <form @submit.prevent="handlePredict" class="space-y-3">
                 <!-- 基本信息区块 -->
                 <div class="bg-base-50 rounded-xl p-6 border border-base-200">
                   <h3 class="text-lg font-semibold text-base-content mb-4 flex items-center gap-2">
@@ -40,23 +40,19 @@
                   </h3>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">品牌 *</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        品牌 <span class="text-red-500">*</span>
                       </label>
-                      <select v-model="vehicleInfo.brand" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary" required>
-                        <option value="">请选择品牌</option>
-                        <option v-for="brand in brands" :key="brand" :value="brand">{{ brand }}</option>
-                      </select>
+                      <input v-model="vehicleInfo.brand" type="text" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary" 
+                             placeholder="请输入品牌，如：奥迪、宝马、奔驰、大众、丰田等" required>
                     </div>
 
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">车型 *</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        车型 <span class="text-red-500">*</span>
                       </label>
-                      <select v-model="vehicleInfo.model" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary" required :disabled="!vehicleInfo.brand">
-                        <option value="">请选择车型</option>
-                        <option v-for="model in availableModels" :key="model" :value="model">{{ model }}</option>
-                      </select>
+                      <input v-model="vehicleInfo.model" type="text" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary" 
+                             placeholder="请输入车型，如：A4、3系、C级、朗逸、卡罗拉等" required>
                     </div>
                   </div>
                 </div>
@@ -67,29 +63,29 @@
                     <span class="w-2 h-2 bg-secondary rounded-full"></span>
                     技术参数
                   </h3>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">年份 *</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        年份 <span class="text-red-500">*</span>
                       </label>
                       <input v-model.number="vehicleInfo.year" type="number" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary"
                              :min="1990" :max="new Date().getFullYear()" required>
                     </div>
 
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">里程数 (万公里) *</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        里程数 (万公里) <span class="text-red-500">*</span>
                       </label>
                       <input v-model.number="vehicleInfo.mileage" type="number" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary"
                              min="0" step="0.1" required>
                     </div>
 
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">排量 (L)</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        排量 (L) <span class="text-red-500">*</span>
                       </label>
-                      <input v-model.number="vehicleInfo.engine_size" type="number" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary"
-                             min="0" step="0.1">
+                      <input v-model.number="vehicleInfo.displacement" type="number" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary"
+                             min="0" step="0.1" required>
                     </div>
                   </div>
                 </div>
@@ -100,30 +96,27 @@
                     <span class="w-2 h-2 bg-accent rounded-full"></span>
                     配置信息
                   </h3>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">燃料类型</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        变速箱类型 <span class="text-red-500">*</span>
                       </label>
-                      <select v-model="vehicleInfo.fuel_type" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary">
-                        <option value="">请选择燃料类型</option>
-                        <option value="汽油">汽油</option>
-                        <option value="柴油">柴油</option>
-                        <option value="混合动力">混合动力</option>
-                        <option value="纯电动">纯电动</option>
+                      <select v-model="vehicleInfo.transmission" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary" required>
+                        <option value="">请选择变速箱类型</option>
+                        <option value="manual">手动</option>
+                        <option value="automatic">自动</option>
+                        <option value="cvt">CVT</option>
                       </select>
                     </div>
 
                     <div class="form-control">
-                      <label class="label">
-                        <span class="label-text font-medium text-base-content">变速箱类型</span>
+                      <label class="text-lg font-bold text-base-content mb-3 block">
+                        所在城市 <span class="text-red-500">*</span>
                       </label>
-                      <select v-model="vehicleInfo.transmission" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary">
-                        <option value="">请选择变速箱类型</option>
-                        <option value="手动">手动</option>
-                        <option value="自动">自动</option>
-                        <option value="CVT">CVT</option>
-                      </select>
+                      <input v-model="vehicleInfo.city" type="text" class="input input-bordered input-lg bg-base-100 border-2 focus:border-primary" 
+                             placeholder="请输入城市，如：北京、上海、广州、深圳等" required>
                     </div>
                   </div>
                 </div>
@@ -135,11 +128,15 @@
                     车辆状况
                   </h3>
                   <div class="form-control">
-                    <label class="label">
-                      <span class="label-text font-medium text-base-content">详细描述</span>
+                    <label class="text-lg font-bold text-base-content mb-3 block">
+                      车况等级 <span class="text-red-500">*</span>
                     </label>
-                    <textarea v-model="vehicleInfo.condition" class="textarea textarea-bordered textarea-lg bg-base-100 border-2 focus:border-primary h-32"
-                              placeholder="请详细描述车辆的整体状况、维修记录、事故情况、外观内饰状态等信息，这将有助于提高预测准确性..."></textarea>
+                    <select v-model="vehicleInfo.condition" class="select select-bordered select-lg bg-base-100 border-2 focus:border-primary" required>
+                      <option value="excellent">优秀 - 车况极佳，无明显磨损</option>
+                      <option value="good">良好 - 车况良好，正常使用痕迹</option>
+                      <option value="fair">一般 - 有一定磨损，但不影响使用</option>
+                      <option value="poor">较差 - 磨损较重，需要维修</option>
+                    </select>
                   </div>
                 </div>
 
@@ -161,7 +158,7 @@
         <!-- 右侧：预测结果和模型选择 -->
         <div class="xl:col-span-1 space-y-6">
           <!-- 模型选择卡片 -->
-          <div class="bg-base-100 rounded-2xl shadow-xl border border-base-300/50 sticky top-6">
+          <div class="bg-base-100 rounded-2xl shadow-xl border border-base-300/50">
             <div class="p-6">
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
@@ -177,24 +174,21 @@
                   <span class="label-text font-medium text-base-content">选择预测模型</span>
                 </label>
                 <select v-model="selectedModel" class="select select-bordered select-lg bg-base-100 border-2 focus:border-secondary">
-                  <option value="default">🎯 默认模型 (推荐)</option>
-                  <option value="advanced">🚀 高级模型</option>
-                  <option value="fast">⚡ 快速模型</option>
+                  <option value="random_forest">🎯 随机森林模型 (推荐)</option>
+                  <option value="gradient_boosting">🚀 梯度提升模型</option>
+                  <option value="linear_regression">⚡ 线性回归模型</option>
                 </select>
               </div>
 
               <div class="bg-base-50 rounded-lg p-4 space-y-2">
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="w-2 h-2 bg-success rounded-full"></span>
-                  <span class="text-base-content/80">默认模型：平衡准确性和速度</span>
+                <div v-if="selectedModel === 'random_forest'" class="flex items-center gap-2 mt-2">
+                  <span class="text-base-content/80">随机森林：平衡准确性和稳定性</span>
                 </div>
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="w-2 h-2 bg-info rounded-full"></span>
-                  <span class="text-base-content/80">高级模型：更高准确性，耗时较长</span>
+                <div v-else-if="selectedModel === 'gradient_boosting'" class="flex items-center gap-2 mt-2">
+                  <span class="text-base-content/80">梯度提升：高精度预测，计算时间较长</span>
                 </div>
-                <div class="flex items-center gap-2 text-sm">
-                  <span class="w-2 h-2 bg-warning rounded-full"></span>
-                  <span class="text-base-content/80">快速模型：快速预测，准确性略低</span>
+                <div v-else-if="selectedModel === 'linear_regression'" class="flex items-center gap-2 mt-2">
+                  <span class="text-base-content/80">线性回归：快速预测，准确性略低</span>
                 </div>
               </div>
             </div>
@@ -243,16 +237,35 @@
               <div>
                 <h4 class="font-semibold mb-4 text-base-content">主要影响因素</h4>
                 <div class="space-y-3">
-                  <div v-for="factor in predictionResult.influence_factors" :key="factor.factor"
-                       class="flex justify-between items-center p-3 bg-base-100 rounded-lg border border-base-200">
-                    <span class="font-medium text-base-content">{{ factor.factor }}</span>
+                  <div class="flex justify-between items-center p-3 bg-base-100 rounded-lg border border-base-200">
+                    <span class="font-medium text-base-content">车龄影响</span>
                     <div class="flex items-center gap-2">
-                      <span class="text-sm font-bold px-2 py-1 rounded-full" :class="{
-                        'text-success bg-success/10': factor.impact > 0,
-                        'text-error bg-error/10': factor.impact < 0,
-                        'text-base-content bg-base-200': factor.impact === 0
-                      }">
-                        {{ factor.impact > 0 ? '+' : '' }}{{ (factor.impact * 100).toFixed(1) }}%
+                      <span class="text-sm font-bold px-2 py-1 rounded-full text-base-content bg-base-200">
+                        {{ predictionResult.factor_analysis.age_impact }}%
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center p-3 bg-base-100 rounded-lg border border-base-200">
+                    <span class="font-medium text-base-content">里程影响</span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold px-2 py-1 rounded-full text-base-content bg-base-200">
+                        {{ predictionResult.factor_analysis.mileage_impact }}%
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center p-3 bg-base-100 rounded-lg border border-base-200">
+                    <span class="font-medium text-base-content">品牌影响</span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold px-2 py-1 rounded-full text-base-content bg-base-200">
+                        {{ predictionResult.factor_analysis.brand_impact }}%
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex justify-between items-center p-3 bg-base-100 rounded-lg border border-base-200">
+                    <span class="font-medium text-base-content">其他影响</span>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-bold px-2 py-1 rounded-full text-base-content bg-base-200">
+                        {{ predictionResult.factor_analysis.other_impact }}%
                       </span>
                     </div>
                   </div>
@@ -303,12 +316,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { VehicleInfo, PredictionResult, PredictionHistory } from '@/types/factory'
+import type { PredictionRequest, ModelSelectOption } from '@/types/apis/prediction_T'
+import { predictPrice } from '@/api/user/prediction'
 
 // 响应式数据
 const isLoading = ref(false)
-const selectedModel = ref('default')
+const selectedModel = ref<ModelSelectOption>('random_forest')
 const predictionResult = ref<PredictionResult | null>(null)
 const predictionHistory = ref<PredictionHistory[]>([])
 
@@ -318,68 +333,69 @@ const vehicleInfo = ref<VehicleInfo>({
   model: '',
   year: new Date().getFullYear(),
   mileage: 0,
-  engine_size: 0,
-  fuel_type: '',
+  displacement: 0, // 排量
   transmission: '',
-  condition: ''
-})
-
-// 品牌和车型数据
-const brands = ref(['奥迪', '宝马', '奔驰', '大众', '丰田', '本田', '日产', '现代', '起亚', '福特'])
-const brandModels = ref<Record<string, string[]>>({
-  '奥迪': ['A3', 'A4', 'A6', 'Q3', 'Q5', 'Q7'],
-  '宝马': ['1系', '3系', '5系', 'X1', 'X3', 'X5'],
-  '奔驰': ['A级', 'C级', 'E级', 'GLA', 'GLC', 'GLE'],
-  '大众': ['朗逸', '帕萨特', '迈腾', '途观', '途岳', '途昂'],
-  '丰田': ['卡罗拉', '凯美瑞', '汉兰达', 'RAV4', '普拉多', '陆地巡洋舰'],
-  '本田': ['思域', '雅阁', 'CR-V', '缤智', '冠道', '艾力绅'],
-  '日产': ['轩逸', '天籁', '奇骏', '逍客', '楼兰', '途达'],
-  '现代': ['朗动', '索纳塔', '途胜', 'ix35', '胜达', '库斯途'],
-  '起亚': ['K3', 'K5', '智跑', '狮跑', '索兰托', '嘉华'],
-  '福特': ['福克斯', '蒙迪欧', '翼虎', '锐界', '探险者', '撼路者']
-})
-
-// 计算属性
-const availableModels = computed(() => {
-  return vehicleInfo.value.brand ? brandModels.value[vehicleInfo.value.brand] || [] : []
+  condition: 'good', // 默认车况为good
+  city: '' // 用户输入城市
 })
 
 // 方法
 const handlePredict = async () => {
   isLoading.value = true
   try {
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    // 模拟预测结果
-    predictionResult.value = {
-      predicted_price: Math.floor(Math.random() * 200000) + 50000,
-      price_range: {
-        min: Math.floor(Math.random() * 150000) + 40000,
-        max: Math.floor(Math.random() * 250000) + 60000
-      },
-      confidence: Math.random() * 0.3 + 0.7,
-      influence_factors: [
-        { factor: '车龄', impact: -0.15 },
-        { factor: '里程数', impact: -0.12 },
-        { factor: '品牌价值', impact: 0.08 },
-        { factor: '车型热度', impact: 0.05 },
-        { factor: '市场供需', impact: 0.03 }
-      ]
+    // 构建API请求参数
+    const requestData: PredictionRequest = {
+      brand: vehicleInfo.value.brand,
+      model: vehicleInfo.value.model,
+      year: vehicleInfo.value.year,
+      mileage: vehicleInfo.value.mileage,
+      displacement: vehicleInfo.value.displacement,
+      transmission: vehicleInfo.value.transmission,
+      condition: vehicleInfo.value.condition,
+      city: vehicleInfo.value.city,
+      model_select: selectedModel.value
     }
 
-    // 添加到历史记录
-    const historyRecord: PredictionHistory = {
-      id: Date.now().toString(),
-      vehicle_info: { ...vehicleInfo.value },
-      predicted_price: predictionResult.value.predicted_price,
-      confidence: predictionResult.value.confidence,
-      created_at: new Date().toISOString()
+    // 调用API
+    const response = await predictPrice(requestData)
+    
+    if (response.code === 200) {
+      // 转换API响应为页面所需格式
+      predictionResult.value = {
+        predicted_price: response.data.predicted_price,
+        price_range: {
+          min: response.data.price_range.min,
+          max: response.data.price_range.max
+        },
+        confidence: response.data.confidence_score / 100, // 转换为0-1范围
+        factor_analysis: {
+          age_impact: response.data.factor_analysis.age_impact,
+          mileage_impact: response.data.factor_analysis.mileage_impact,
+          brand_impact: response.data.factor_analysis.brand_impact,
+          other_impact: response.data.factor_analysis.other_impact
+        },
+        model_used: response.data.model_used,
+        market_insights: response.data.market_insights
+      }
+
+      // 添加到历史记录
+      const historyRecord: PredictionHistory = {
+        id: response.data.record_id,
+        vehicle_info: { ...vehicleInfo.value },
+        predicted_price: response.data.predicted_price,
+        confidence: response.data.confidence_score / 100,
+        model_type: selectedModel.value,
+        created_at: new Date().toISOString()
+      }
+      predictionHistory.value.unshift(historyRecord)
+    } else {
+      throw new Error(response.msg || '预测失败')
     }
-    predictionHistory.value.unshift(historyRecord)
 
   } catch (error) {
     console.error('预测失败:', error)
+    // 可以添加错误提示
+    alert('预测失败，请检查输入信息或稍后重试')
   } finally {
     isLoading.value = false
   }
@@ -394,11 +410,14 @@ const loadHistoryRecord = (record: PredictionHistory) => {
       max: record.predicted_price * 1.1
     },
     confidence: record.confidence,
-    influence_factors: [
-      { factor: '车龄', impact: -0.15 },
-      { factor: '里程数', impact: -0.12 },
-      { factor: '品牌价值', impact: 0.08 }
-    ]
+    factor_analysis: {
+      age_impact: 15,
+      mileage_impact: 12,
+      brand_impact: 8,
+      other_impact: 10
+    },
+    model_used: record.model_type,
+    market_insights: {}
   }
 }
 
