@@ -21,12 +21,16 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/admin/': RouteRecordInfo<'/admin/', '/admin', Record<never, never>, Record<never, never>>,
     '/admin/ai/': RouteRecordInfo<'/admin/ai/', '/admin/ai', Record<never, never>, Record<never, never>>,
+    '/admin/community/': RouteRecordInfo<'/admin/community/', '/admin/community', Record<never, never>, Record<never, never>>,
     '/admin/Content/': RouteRecordInfo<'/admin/Content/', '/admin/Content', Record<never, never>, Record<never, never>>,
     '/admin/dashboard/': RouteRecordInfo<'/admin/dashboard/', '/admin/dashboard', Record<never, never>, Record<never, never>>,
+    '/admin/data/': RouteRecordInfo<'/admin/data/', '/admin/data', Record<never, never>, Record<never, never>>,
     '/admin/files/': RouteRecordInfo<'/admin/files/', '/admin/files', Record<never, never>, Record<never, never>>,
     '/admin/knowledge/': RouteRecordInfo<'/admin/knowledge/', '/admin/knowledge', Record<never, never>, Record<never, never>>,
     '/admin/log/': RouteRecordInfo<'/admin/log/', '/admin/log', Record<never, never>, Record<never, never>>,
+    '/admin/models/': RouteRecordInfo<'/admin/models/', '/admin/models', Record<never, never>, Record<never, never>>,
     '/admin/notice/': RouteRecordInfo<'/admin/notice/', '/admin/notice', Record<never, never>, Record<never, never>>,
+    '/admin/predictions/': RouteRecordInfo<'/admin/predictions/', '/admin/predictions', Record<never, never>, Record<never, never>>,
     '/admin/profile/': RouteRecordInfo<'/admin/profile/', '/admin/profile', Record<never, never>, Record<never, never>>,
     '/admin/settings/': RouteRecordInfo<'/admin/settings/', '/admin/settings', Record<never, never>, Record<never, never>>,
     '/admin/systemConfig/': RouteRecordInfo<'/admin/systemConfig/', '/admin/systemConfig', Record<never, never>, Record<never, never>>,
@@ -74,12 +78,20 @@ declare module 'vue-router/auto-routes' {
       routes: '/admin/ai/'
       views: never
     }
+    'src/pages/admin/community/index.vue': {
+      routes: '/admin/community/'
+      views: never
+    }
     'src/pages/admin/Content/index.vue': {
       routes: '/admin/Content/'
       views: never
     }
     'src/pages/admin/dashboard/index.vue': {
       routes: '/admin/dashboard/'
+      views: never
+    }
+    'src/pages/admin/data/index.vue': {
+      routes: '/admin/data/'
       views: never
     }
     'src/pages/admin/files/index.vue': {
@@ -94,8 +106,16 @@ declare module 'vue-router/auto-routes' {
       routes: '/admin/log/'
       views: never
     }
+    'src/pages/admin/models/index.vue': {
+      routes: '/admin/models/'
+      views: never
+    }
     'src/pages/admin/notice/index.vue': {
       routes: '/admin/notice/'
+      views: never
+    }
+    'src/pages/admin/predictions/index.vue': {
+      routes: '/admin/predictions/'
       views: never
     }
     'src/pages/admin/profile/index.vue': {
